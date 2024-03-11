@@ -546,3 +546,118 @@
     return view('kategori', ['data' => $data]);
     ```
     ![read QB](report_asset/js3/5.7.png)
+## F. ELOQUENT ORM
+### Praktikum 6
+1. create model
+    ```
+    php artisan make:model UserModel
+    ```
+2. UserModel modification
+    ```php
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Factories\HasFactory;
+    use Illuminate\Database\Eloquent\Model;
+
+    class UserModel extends Model
+    {
+        use HasFactory;
+
+        protected $table = 'm_user';
+        protected $primaryKey = 'user_id';
+    }
+    ```
+3. route modification
+    ```php
+    Route::get('/user', [UserController::class, 'index']);  
+    ```
+4. create UserController
+    ```
+    php artisan make:controller UserController
+    ```
+5. UserController modification
+    ```php
+    namespace App\Http\Controllers;
+
+    use App\Models\UserModel;
+    use Illuminate\Http\Request;
+
+    class UserController extends Controller
+    {
+        public function index()
+        {
+            $user = UserModel::all();
+            return view('user', ['data' => $user]);
+        }
+    }
+
+    ```
+6. user view
+    ```html
+    <head>
+        <title>Data User</title>
+    </head>
+    <body>
+        <h1>Data User</h1>
+        <table border="1" cellpadding="2" cellspacing="0">
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Nama</th>
+                <th>ID Level Pengguna</th>
+            </tr>
+            @foreach ($data as $d)
+            <tr>
+                <td>{{ $d->user_id}}</td>
+                <td>{{ $d->username}}</td>
+                <td>{{ $d->nama}}</td>
+                <td>{{ $d->level_id}}</td>
+            </tr>
+            @endforeach
+        </table>
+    </body>
+    </html>
+    ```
+    ![result 6.1](report_asset/js3/6.1.png)
+7. UserController modification (again)
+    ```php
+    namespace App\Http\Controllers;
+
+    use App\Models\UserModel;
+    use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Hash;
+
+    class UserController extends Controller
+    {
+        public function index()
+        {
+            $data = [
+                'username' => 'customer-1',
+                'nama' => 'Pelanggan',
+                'password' => Hash::make('12345'),
+                'level_id' => 4
+            ];
+            UserModel::insert($data);
+
+            $user = UserModel::all();
+            return view('user', ['data' => $user]);
+        }
+    }
+    ```
+    ![result 6.2](report_asset/js3/6.2.png)
+8. UserController modification (again)
+    ```php
+    class UserController extends Controller
+    {
+        public function index()
+        {
+            $data = ['nama' => 'Pelanggan Pertama'];
+            UserModel::where('username', 'customer 1')->update($data);
+
+            $user = UserModel::all();
+            return view('user', ['data' => $user]);
+        }
+    }
+    ```
+    ![result 6.2](report_asset/js3/6.3.png)
+
