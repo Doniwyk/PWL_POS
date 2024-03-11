@@ -448,3 +448,63 @@
         ```
         ![result t_penjualan_detail](report_asset/js3/3.9.png)
 ## D. DB FACADE
+### Praktikum 4
+1. create LevelController
+    ```
+    php artisan make:controller LevelController
+    ```
+2. route modification
+    ```php
+    Route::get('/level', [LevelController::class, 'index']);
+    ```
+3. insert data via DB Facade
+    ```php
+    DB::insert('insert into m_level(level_kode, level_nama, created_at) values(?, ?, ?)', ['CUS', 'Pelanggan', now()]);
+    return 'Insert data baru berhasil';
+    ```
+    ![insert](report_asset/js3/4.1.png)\
+    ![insert](report_asset/js3/4.2.png)
+4. update data via DB Facade
+    ```php
+    $row = DB::update('update m_level set level_nama = ? where level_kode = ?', ['Customer', 'CUS']);;
+    return 'Update data berhasil. Jumlah data yang diupdate: ' . $row . ' baris';
+    ```
+    ![update](report_asset/js3/4.3.png)\
+    ![update](report_asset/js3/4.4.png)
+5. Delete data via DB Facade
+    ```php
+    $row = DB::delete('delete from m_level where level_kode = ?', ['CUS']);
+    return 'Delete data berhasil. Jumlah data yang dihapus: ' . $row . ' baris';
+    ```
+    ![delete](report_asset/js3/4.5.png)\
+    ![delete](report_asset/js3/4.6.png)
+6. Select data via DB Facade
+    ```php
+    $data = DB::select('select * from m_level');
+    return view('level', ['data' => $data]);
+    ```
+    ```html
+    <!DOCTYPE html>
+    <head>
+        <title>Data Level Pengguna</title>
+    </head>
+    <body>
+        <h1>Data Level Pengguna</h1>
+        <table border="1" cellpadding="2" cellspacing="0">
+            <tr>
+                <th>TD</th>
+                <th>Kode Level</th>
+                <th>Nama Level</th>
+            </tr>
+            @foreach ($data as $d)
+            <tr>
+                <td>{{ $d->level_id}}</td>
+                <td>{{ $d->level_kode}}</td>
+                <td>{{ $d->level_nama}}</td>
+            </tr>
+            @endforeach
+        </table>
+    </body>
+    </html>
+    ```
+    ![select](report_asset/js3/4.7.png)
