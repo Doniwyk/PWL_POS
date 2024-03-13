@@ -1,7 +1,7 @@
 ### Doni Wahyu Kurniawan <br> TI-2H | 13 | 2241720015 <hr>
 <div align="center">
 
-## JOBSHEET 3 <br> MIGRATION, SEEDER, DB FACADE, QUERY BUILDER, dan ELOQUENT ORM
+# JOBSHEET 3 <br> MIGRATION, SEEDER, DB FACADE, QUERY BUILDER, dan ELOQUENT ORM
 
 </div>
 
@@ -685,3 +685,61 @@
     > kode tersebut digunakan untuk mendeklarasi nama tabel dan kolom PRIMARY KEY yang akan digunakan pada model tersebut. Memakai modifier protected agar variabel tersebut hanya dapat diakses dari dalam class itu sendiri dan class turunannya.  `$primaryKey = ‘user_id’;` digunakan agar model tahu bahwa kolom utamanya adalah user_id.
 12. Menurut kalian, lebih mudah menggunakan mana dalam melakukan operasi CRUD ke database (DB Façade / Query Builder / Eloquent ORM) ? jelaskan 
     > Menurut saya lebih mudah menggunakan Eloquent ORM karena pendekatannya yang abstrak dan berbasis objek dalam interaksi dengan database, memungkinkan penggunaan model dan relasi antar model. Dibandingkan dengan DB Facade atau Query Builder, Eloquent ORM lebih mudah digunakan karena menyediakan sintaks yang lebih mirip dengan bahasa pemrograman. 
+
+<br>
+
+<div align="center">
+
+# JOBSHEET 4 <br>MODEL DAN ELOQUENT ORM
+
+</div>
+
+## A. PROPERTI `$fillable` DAN `$guarded`
+### Praktikum 1
+1. modification UserModel.php
+    ```php
+    class UserModel extends Model
+    {
+        use HasFactory;
+
+        protected $table = 'm_user';
+        protected $primaryKey = 'user_id';
+        protected $fillable = ['level_id', 'username', 'nama', 'password'];
+    }
+    ```
+2. modification UserController.php
+    ```php
+    class UserController extends Controller
+    {
+        public function index()
+        {
+            $data = [
+                'level_id' => 2,
+                'username' => 'manager_dua',
+                'nama' => 'Manager 2',
+                'password' => Hash::make('12345'),
+            ];
+            UserModel::create($data);
+
+            $user = UserModel::all();
+            return view('user', ['data' => $user]);
+        }
+    }
+    ```
+    result
+    ![result create with match fillable and data](report_asset/js4/1.1.png)
+3. modification `$fillable` UserModel.php
+    ```php
+    protected $fillable = ['level_id', 'username', 'nama'];
+    ```
+4. modification `$data` array UserController.php
+    ```php
+    $data = [
+        'level_id' => 2,
+        'username' => 'manager_tiga',
+        'nama' => 'Manager 3',
+        'password' => Hash::make('12345'),
+    ];
+    ```
+    result
+    ![result with mismatch fillable and data](report_asset/js4/1.2.png)
