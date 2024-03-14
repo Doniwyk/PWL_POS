@@ -686,7 +686,7 @@
 12. Menurut kalian, lebih mudah menggunakan mana dalam melakukan operasi CRUD ke database (DB Façade / Query Builder / Eloquent ORM) ? jelaskan 
     > Menurut saya lebih mudah menggunakan Eloquent ORM karena pendekatannya yang abstrak dan berbasis objek dalam interaksi dengan database, memungkinkan penggunaan model dan relasi antar model. Dibandingkan dengan DB Facade atau Query Builder, Eloquent ORM lebih mudah digunakan karena menyediakan sintaks yang lebih mirip dengan bahasa pemrograman. 
 
-<br>
+<br><hr>
 
 <div align="center">
 
@@ -696,7 +696,7 @@
 
 ## A. PROPERTI `$fillable` DAN `$guarded`
 ### Praktikum 1
-1. modification UserModel.php
+1. UserModel.php modification 
     ```php
     class UserModel extends Model
     {
@@ -707,7 +707,7 @@
         protected $fillable = ['level_id', 'username', 'nama', 'password'];
     }
     ```
-2. modification UserController.php
+2. UserController.php modification 
     ```php
     class UserController extends Controller
     {
@@ -726,13 +726,13 @@
         }
     }
     ```
-    result
+    result\
     ![result create with match fillable and data](report_asset/js4/1.1.png)
-3. modification `$fillable` UserModel.php
+3. `$fillable` UserModel.php modification 
     ```php
     protected $fillable = ['level_id', 'username', 'nama'];
     ```
-4. modification `$data` array UserController.php
+4. `$data` array UserController.php modification
     ```php
     $data = [
         'level_id' => 2,
@@ -741,5 +741,78 @@
         'password' => Hash::make('12345'),
     ];
     ```
-    result
-    ![result with mismatch fillable and data](report_asset/js4/1.2.png)
+    result\
+    ![result with mismatch fillable and data](report_asset/js4/1.2.png)\
+    error karena bagian fillable tidak memiliki atribut password, namun pada controller modifikasi tersebut memiliki atribut password yang ingin di create.
+## B. RETRIEVING SINGLE MODELS
+### Praktikum 2.1
+1. UserController.php modification
+    ```php
+    class UserController extends Controller
+    {
+        public function index()
+        {
+            $user = UserModel::find(1);
+            return view('user', ['data' => $user]);
+        }
+    }
+    ```
+2. user.blade.php modification
+    ```html
+    <body>
+        <h1>Data User</h1>
+        <table border="1" cellpadding="2" cellspacing="0">
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Nama</th>
+                <th>ID Level Pengguna</th>
+            </tr>
+            <tr>
+                <td>{{ $data->user_id}}</td>
+                <td>{{ $data->username}}</td>
+                <td>{{ $data->nama}}</td>
+                <td>{{ $data->level_id}}</td>
+            </tr>
+        </table>
+    </body>
+    ```
+    result\
+    ![result 2.1.1](report_asset/js4/2.1.1.png)
+3. `$user` on UserController.php modification
+    ```php
+    $user = UserModel::where('level_id', 1)->first();
+    ```
+    result\
+    ![result 2.1.2](report_asset/js4/2.1.1.png)
+4. `$user` on UserController.php modification
+    ```php
+    $user = UserModel::firstWhere('level_id', 1);
+    ```
+    result\
+    ![result 2.1.3](report_asset/js4/2.1.1.png)
+5. `$user` on UserController.php modification
+    ```php
+    $user = UserModel::findOr(1, ['username', 'nama'], function() {
+        abort(404);
+    });
+    ```
+    result\
+    ![result 2.1.4](report_asset/js4/2.1.2.png)
+6. `$user` on UserController.php modification
+    ```php
+    $user = UserModel::findOr(20, ['username', 'nama'], function() {
+        abort(404);
+    });
+    ```
+    result\
+    ![result 2.1.5](report_asset/js4/2.1.3.png)
+
+
+### Praktikum 2.2
+
+### Praktikum 2.3
+### Praktikum 2.4
+### Praktikum 2.5
+### Praktikum 2.6
+### Praktikum 2.7
