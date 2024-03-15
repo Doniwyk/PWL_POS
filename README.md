@@ -814,14 +814,38 @@
     $user = UserModel::findOrFail(1);
     ```
     result\
-    ![resutl 2.2.1](report_asset/js4/2.2.1.png)
+    ![result 2.2.1](report_asset/js4/2.2.1.png)
 2. `$user` on UserController.php modification
     ```php
     $user = UserModel::where('username', 'manager9')->firstOrFail();
     ```
     result\
-    ![resutl 2.2.1](report_asset/js4/2.2.2.png)
+    ![result 2.2.1](report_asset/js4/2.2.2.png)
 ### Praktikum 2.3
+1. `$user` on UserController.php modification
+    ```php
+    $user = UserModel::where('level_id', 2)->count();
+    dd($user);
+    ```
+    result\
+    ![result 232.1](report_asset/js4/2.3.1.png)
+2. `$user` on UserController.php modification
+    ```php
+    $user = UserModel::where('level_id', 2)->count();
+    ```
+    `user.blade.php` modification
+    ```php
+    <table border="1" cellpadding="2" cellspacing="0">
+        <tr>
+            <th>Jumlah Pengguna</th>
+        </tr>
+        <tr>
+            <td>{{ $data }}</td>
+        </tr>
+    </table>
+    ```
+    result\
+    ![result 2.3.2](report_asset/js4/2.3.2.png)
 ### Praktikum 2.4
 ### Praktikum 2.5
 ### Praktikum 2.6
