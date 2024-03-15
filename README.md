@@ -808,9 +808,19 @@
     result\
     ![result 2.1.5](report_asset/js4/2.1.3.png)
 
-
 ### Praktikum 2.2
-
+1. `$user` on UserController.php modification
+    ```php
+    $user = UserModel::findOrFail(1);
+    ```
+    result\
+    ![resutl 2.2.1](report_asset/js4/2.2.1.png)
+2. `$user` on UserController.php modification
+    ```php
+    $user = UserModel::where('username', 'manager9')->firstOrFail();
+    ```
+    result\
+    ![resutl 2.2.1](report_asset/js4/2.2.2.png)
 ### Praktikum 2.3
 ### Praktikum 2.4
 ### Praktikum 2.5
