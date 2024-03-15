@@ -807,7 +807,6 @@
     ```
     result\
     ![result 2.1.5](report_asset/js4/2.1.3.png)
-
 ### Praktikum 2.2
 1. `$user` on UserController.php modification
     ```php
@@ -828,7 +827,7 @@
     dd($user);
     ```
     result\
-    ![result 232.1](report_asset/js4/2.3.1.png)
+    ![result 2.3.1](report_asset/js4/2.3.1.png)
 2. `$user` on UserController.php modification
     ```php
     $user = UserModel::where('level_id', 2)->count();
@@ -847,6 +846,95 @@
     result\
     ![result 2.3.2](report_asset/js4/2.3.2.png)
 ### Praktikum 2.4
+1. `$user` on UserController.php modification
+    ```php
+    $user = UserModel::firstOrCreate(
+        [
+            'username' => 'manager',
+            'nama' => 'Manager',
+        ]
+    );
+    ```
+2. `user.blade.php` view modification
+    ```html
+    <body>
+        <h1>Data User</h1>
+        <table border="1" cellpadding="2" cellspacing="0">
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Nama</th>
+                <th>ID Level Pengguna</th>
+            </tr>
+            <tr>
+                <td>{{ $data->user_id}}</td>
+                <td>{{ $data->username}}</td>
+                <td>{{ $data->nama}}</td>
+                <td>{{ $data->level_id}}</td>
+            </tr>
+        </table>
+    </body>
+    ```
+    result\
+    ![result 2.4.1](report_asset/js4/2.4.1.png)
+3. edit `$fillable`
+    ```php
+    protected $fillable = ['level_id', 'username', 'nama', 'password'];
+    ```
+4. `$user` on UserController.php modification
+    ```php
+    $user = UserModel::firstOrCreate(
+        [
+            'username' => 'manager22',
+            'nama' => 'Manager Dua Duadua',
+            'password' => Hash::make('12345'),
+            'level_id' => 2,
+        ]
+    );
+    ```
+    result\
+    ![result 2.4.2](report_asset/js4/2.4.2.png)\
+    ![result 2.4.3](report_asset/js4/2.4.3.png)
+5. `$user` on UserController.php modification
+    ```php
+    $user = UserModel::firstOrNew(
+        [
+            'username' => 'manager',
+            'nama' => 'Manager',
+        ],
+    );
+    ```
+    result\
+    ![result 2.4.4](report_asset/js4/2.4.4.png)
+6. `$user` on UserController.php modification
+    ```php
+    $user = UserModel::firstOrNew(
+        [
+            'username' => 'manager33',
+            'nama' => 'Manager Tiga Tiga',
+            'password' => Hash::make('12345'),
+            'level_id' => 2
+        ],
+    );
+    ```
+    result\
+    ![result 2.4.5](report_asset/js4/2.4.5.png)\
+    ![result 2.4.6](report_asset/js4/2.4.6.png)
+7. `$user` on UserController.php modification
+    ```php
+    $user = UserModel::firstOrNew(
+        [
+            'username' => 'manager33',
+            'nama' => 'Manager Tiga Tiga',
+            'password' => Hash::make('12345'),
+            'level_id' => 2
+        ],
+    );
+    $user->save();
+    ```
+    result\
+    ![result 2.4.7](report_asset/js4/2.4.7.png)\
+    ![result 2.4.8](report_asset/js4/2.4.8.png)
 ### Praktikum 2.5
 ### Praktikum 2.6
 ### Praktikum 2.7
