@@ -999,4 +999,166 @@
     result\
     ![result 2.5.2](report_asset/js4/2.5.2.png)
 ### Praktikum 2.6
+1. `user.blade.php`
+    ```html
+    <body>
+        <h1>Data User</h1>
+        <a href="/user/tambah">+ Tambah User</a>
+        <table border="1" cellpadding="2" cellspacing="0">
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Nama</th>
+                <th>ID Level Pengguna</th>
+                <th>Aksi</th>
+            </tr>
+            @foreach($data as $d)
+                <tr>
+                    <td>{{ $d->user_id}}</td>
+                    <td>{{ $d->username}}</td>
+                    <td>{{ $d->nama}}</td>
+                    <td>{{ $d->level_id}}</td>
+                    <td><a href="/user/ubah/{{ $d->user_id}}">Ubah</a> | <a href="/user/hapus/{{ $d->user_id}}">Hapus</a></td>
+                </tr>
+            @endforeach
+        </table>
+    </body>
+    ```
+2. `UserController.php`
+    ```php
+    class UserController extends Controller
+    {
+        public function index()
+        {
+            $user = UserModel::all();
+            return view('user', ['data' => $user]);
+        }
+    }
+    ```
+    result\
+    ![result 2.6.1](report_asset/js4/2.6.1.png)
+3. `user_tambah.blade.php`
+    ```html
+    <body>
+        <h1>Form Tambah Data User</h1>
+        <form action="/user/tambah_simpan" method="post">
+            {{ csrf_field() }}
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Masukkan Username">
+            <br>
+            <label>Nama</label>
+            <input type="text" name="nama" placeholder="Masukkan Nama">
+            <br>
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Masukkan Password">
+            <br>
+            <label>Level ID</label>
+            <input type="number" name="level_id" placeholder="Masukkan ID Level">
+            <br><br>
+            <input type="submit" class="btn btn-success" value="Simpan">
+        </form>
+    </body>
+    ```
+4. routing `tambah()`
+    ```php
+    Route::get('/user/tambah', [UserController::class, 'tambah']);
+    ```
+5. `tambah()` function on `UserController.php`
+    ```php
+    public function tambah()
+    {
+        return view('user_tambah');
+    }
+    ```
+    result\
+    ![result 2.6.2](report_asset/js4/2.6.2.png)
+6. routing `tambah_simpan()`
+    ```php
+    Route::get('/user/tambah_simpan', [UserController::class, 'tambah_simpan']);
+    ```
+7. `tambah_simpan()` function on `UserController.php`
+    ```php
+    public function tambah_simpan(Request $request)
+    {
+        UserModel::create([
+            'username' => $request->username,
+            'nama' => $request->nama,
+            'password' => Hash::make($request->password),
+            'id_level' => $request->id_level,
+        ]);
+
+        return redirect('/user');
+    }
+    ```
+    result\
+    ![result 2.6.3](report_asset/js4/2.6.3.png)\
+    ![result 2.6.4](report_asset/js4/2.6.4.png)
+8. `user_ubah.blade.php`
+    ```html
+    <body>
+        <h1>Form Ubah Data User</h1>
+        <a href="user">Kembali</a>
+
+        <form method="post" action="user/ubah_simpan">
+            {{ csrf_field() }}
+            {{ method_field('PUT') }}
+
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Masukkan Username" value="{{ $data->username }}">
+            <br>
+            <label>Nama</label>
+            <input type="text" name="nama" placeholder="Masukkan Nama" value="{{ $data->username }}">
+            <br>
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Masukkan Password" value="{{ $data->password }}">
+            <br>
+            <label>Level ID</label>
+            <input type="number" name="level_id" placeholder="Masukkan ID Level" value="{{ $data->level_id }}">
+            <br><br>
+            <input type="submit" class="btn btn-success" value="Ubah">
+        </form>
+    </body>
+    ```
+9. routing `ubah()`
+    ```php
+    Route::get('/user/ubah/{id}', [UserController::class, 'ubah']);
+    ```
+10. `ubah()` function on `UserController.php`
+    ```php
+    public function ubah($id)
+    {
+        $user = UserModel::find($id);
+        return view('user_ubah', ['data' => $user]);
+    }
+    ```
+    result\
+    ![result 2.6.5](report_asset/js4/2.6.5.png)
+11. routing `ubah_simpan()`
+    ```php
+    Route::put('/user/ubah_simpan/{id}', [UserController::class, 'ubah_simpan']);
+    ```
+    result\
+    ![result 2.6.6](report_asset/js4/2.6.6.png)\
+    edit level ID into 2\
+    ![result 2.6.7](report_asset/js4/2.6.7.png)\
+    ![result 2.6.8](report_asset/js4/2.6.8.png)
+12. routing `hapus()`
+    ```php
+    Route::get('/user/hapus/{id}', [UserController::class, 'hapus']);
+    ```
+13. `hapus()` function on `UserController.php`
+    ```php
+    public function hapus($id)
+    {
+        $user = UserModel::find($id);
+        $user->delete();
+
+        return redirect('/user');
+    }
+    ```
+    result\
+    ![result 2.6.9](report_asset/js4/2.6.8.png)\
+    hapus Doni\
+    ![result 2.6.10](report_asset/js4/2.6.9.png)
 ### Praktikum 2.7
+
