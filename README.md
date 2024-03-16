@@ -1161,4 +1161,29 @@
     hapus Doni\
     ![result 2.6.10](report_asset/js4/2.6.9.png)
 ### Praktikum 2.7
-
+1. add additional script on UserModel
+    ```php
+    public function level(): BelongsTo
+    {
+        return $this->belongsTo(LevelModel::class);
+    }
+    ```
+2. create `LevelModel.php`
+    ```php
+    class LevelModel extends Model
+    {
+        use HasFactory;
+        protected $table ='m_level';
+        protected $primaryKey = 'level_id';
+    }
+    ```
+3. `index()` function on `UserController.php`
+    ```php
+    public function index()
+    {
+        $user = UserModel::with('level')->get();
+        dd($user);
+    }
+    ```
+    result\
+    ![result 2.7.1](report_asset/js4/2.7.1.png)
