@@ -1187,3 +1187,463 @@
     ```
     result\
     ![result 2.7.1](report_asset/js4/2.7.1.png)
+
+<br><hr>
+
+<div align="center">
+
+# JOBSHEET 5 <br> BLADE VIEW, WEB TEMPLATING, DATATABLES
+
+</div>
+
+### Praktikum 1
+1. Define the project requirement
+    ```
+    composer require jeroennoten/laravel-adminlte
+    ```
+2. Install project requirement
+    ```
+    php artisan adminlte:install
+    ```
+3. Create file on views/layout/app.blade.php
+    ```php
+    @extends('adminlte::page') 
+ 
+    {{-- Extend and customize the browser title --}} 
+    
+    @section('title') 
+        {{ config('adminlte.title') }} 
+        @hasSection('subtitle') | @yield('subtitle') @endif 
+    @stop 
+    
+    @vite('resources/js/app.js') 
+    
+    {{-- Extend and customize the page content header --}} 
+    
+    @section('content_header') 
+        @hasSection('content_header_title') 
+            <h1 class="text-muted"> 
+                @yield('content_header_title') 
+    
+                @hasSection('content_header_subtitle') 
+                <small class="text-dark"> 
+                    <i class="fas fa-xs fa-angle-right text-muted"></i> 
+                    @yield('content_header_subtitle') 
+                </small> 
+            @endif 
+        </h1> 
+    @endif 
+    @stop 
+
+    {{-- Rename section content to content_body --}} 
+
+    @section('content') 
+    @yield('content_body') 
+    @stop 
+
+
+    {{-- Create a common footer --}} 
+
+    @section('footer') 
+    <div class="float-right"> 
+        Version: {{ config('app.version', '1.0.0') }} 
+    </div> 
+
+    <strong> 
+        <a href="{{ config('app.company_url', '#') }}"> 
+            {{ config('app.company_name', 'My company') }} 
+        </a> 
+    </strong> 
+    @stop 
+
+
+    {{-- Add common Javascript/Jquery code --}} 
+
+
+
+    @push('js') 
+    <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script> 
+
+    @endpush 
+
+    @stack('scripts') 
+
+
+    {{-- Add common CSS customizations --}} 
+
+    @push('css') 
+    <link rel="stylesheet" 
+    href="https://cdn.datatables.net/2.0.2/css/dataTables.dataTables.css" /> 
+    
+    <style type="text/css"> 
+    
+        /* {{-- You can add AdminLTE customizations here --}} z */
+        /* 
+        .card-header { 
+            border-bottom: none; 
+        } 
+        .card-title { 
+            font-weight: 600; 
+        } 
+        */ 
+    
+    </style> 
+    
+    @endpush 
+    ```
+4. Edit resources/views/welcome.blade.php
+    ```php
+    @extends('layout.app')
+
+    {{-- Customize layout sections  --}}
+    @section('subtitle', 'Welcome')
+    @section('content_header_title', 'Home')
+    @section('content_header_subtitle', 'Welcome')
+
+    {{-- Content body: main page content --}}
+    @section('content_body')
+        <p>Welcome to this beatiful admin panel.</p>
+    @stop
+
+    {{-- Push extra CSS --}}
+    @push('css')
+    {{-- Add here extra stylesheets --}}
+    @endpush
+
+    {{-- Push extra JS --}}
+    @push('js')
+        <script> console.log("Hi, I'm using the laravel-AdminLTE package!"); </script>
+    @endpush
+    ```
+5. Result\
+   ![result 1.1](report_asset/js5/1.1.png)
+### Praktikum 2
+1. install laravel datatables
+    ```
+    composer require laravel/ui --dev
+    composer require yajra/laravel-datatables:^10.0
+    ```
+2. install node.js\
+    ![result node.js](report_asset/js5/2.1.png)
+3. install laravel datatables vite and sass
+    * install datatables vite
+        ```
+        npm i laravel-datatables-vite --save-dev
+        ```
+        ![result datatables](report_asset/js5/2.2.png)
+    * install sass
+        ```
+        npm install -D sass
+        ```
+        ![result sass](report_asset/js5/2.3.png)
+4. edit resources/js/app.js
+    ```javascript
+    import './bootstrap';
+    import "../sass/app.scss";
+    import 'laravel-datatables-vite';
+    ```
+5. create file resources/saas/app.scss
+    ```scss
+    // Font
+    @import url('https://fonts.bunny.net/css?family=Nunito');
+
+    // Bootstrap
+    @import 'bootstrap/scss/bootstrap.scss';
+
+    // Datatables
+    @import 'bootstrap-icons/font/bootstrap-icons.css';
+    @import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
+    @import 'datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css';
+    @import 'datatables.net-select-bs5/css/select.bootstrap5.css';
+    ```
+6. npm run dev\
+    ![npm run dev](report_asset/js5/2.4.png)
+7. create model Kategori
+    ```
+    php artisan datatables:make Kategori
+    ```
+8. edit KategoriDataTable
+    ```php
+    <?php
+
+    namespace App\DataTables;
+
+    use App\Models\Kategori;
+    use App\Models\KategoriModel;
+    use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+    use Yajra\DataTables\EloquentDataTable;
+    use Yajra\DataTables\Html\Builder as HtmlBuilder;
+    use Yajra\DataTables\Html\Button;
+    use Yajra\DataTables\Html\Column;
+    use Yajra\DataTables\Html\Editor\Editor;
+    use Yajra\DataTables\Html\Editor\Fields;
+    use Yajra\DataTables\Services\DataTable;
+
+    class KategoriDataTable extends DataTable
+    {
+        /**
+        * Build the DataTable class.
+        *
+        * @param QueryBuilder $query Results from query() method.
+        */
+        public function dataTable(QueryBuilder $query): EloquentDataTable
+        {
+            return (new EloquentDataTable($query))
+                ->addColumn('action', 'kategori.action')
+                ->setRowId('id');
+        }
+
+        /**
+        * Get the query source of dataTable.
+        */
+        public function query(KategoriModel $model): QueryBuilder
+        {
+            return $model->newQuery();
+        }
+
+        /**
+        * Optional method if you want to use the html builder.
+        */
+        public function html(): HtmlBuilder
+        {
+            return $this->builder()
+                        ->setTableId('kategori-table')
+                        ->columns($this->getColumns())
+                        ->minifiedAjax()
+                        //->dom('Bfrtip')
+                        ->orderBy(1)
+                        ->selectStyleSingle()
+                        ->buttons([
+                            Button::make('excel'),
+                            Button::make('csv'),
+                            Button::make('pdf'),
+                            Button::make('print'),
+                            Button::make('reset'),
+                            Button::make('reload')
+                        ]);
+        }
+
+        /**
+        * Get the dataTable columns definition.
+        */
+        public function getColumns(): array
+        {
+            return [
+            /* Column::computed('action')
+                ->exportable(false)
+                ->printable(false)
+                ->width(60)
+                ->addClass('text-center'), */
+                Column::make('kategori_id'),
+                Column::make('kategori_kode'),
+                Column::make('kategori_nama'),
+                Column::make('created_at'),
+                Column::make('updated_at'),
+            ];
+        }
+
+        /**
+        * Get the filename for export.
+        */
+        protected function filename(): string
+        {
+            return 'Kategori_' . date('YmdHis');
+        }
+    }
+
+    ```
+9. edit model Kategori
+    ```php
+    class KategoriModel extends Model
+    {
+        use HasFactory;
+        protected $table = 'm_kategori';
+        protected $primaryKey = 'kategori_id';
+        protected $fillable = ['kategori_kode', 'kategori_nama'];
+
+        public function barang(): HasMany
+        {
+            return $this->hasMany(BarangModel::class, 'kategori_id', 'kategori_id');
+        }
+    }
+    ```
+10. edit controller kategori
+    ```php
+    class KategoriController extends Controller
+    {
+        public function index(KategoriDataTable $dataTable)
+        {
+            return $dataTable->render('kategori.index');
+        }
+
+        public function create()
+        {
+            return view('kategori.create');
+        }
+
+        public function store(Request $request)
+        {
+            KategoriModel::create([
+                'kategori_kode' => $request->kodeKategori,
+                'kategori_nama' => $request->namaKategori
+            ]);
+            return redirect('/kategori');
+        }
+    }
+    ```
+11. create resources/views/kategori/index.blade.php
+    ```php
+    @extends('layout.app')
+
+    {{-- Customize layout sections  --}}
+
+    @section('subtitle', 'Kategori')
+    @section('content_header_title', 'Home')
+    @section('content_header_subtitle', 'Kategori')
+
+    @section('content')
+        <div class="container">
+            <div class="card">
+                <div class="card-header">Manage Kategori</div>
+                <div class="card-body">
+                    {{ $dataTable->table() }}
+                </div>
+            </div>
+        </div>
+    @endsection
+
+    @push('scripts')
+        {{ $dataTable->scripts() }}
+    @endpush
+    ```
+12. route for kategori
+    ```php
+    Route::get('/kategori', [KategoriController::class, 'index']);
+    ```
+13. setting ViteJs/script type defaults
+    ```php
+    <?php
+
+    namespace App\Providers;
+
+    use Illuminate\Support\ServiceProvider;
+    use Yajra\DataTables\Html\Builder;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+        * Register any application services.
+        */
+        public function register(): void
+        {
+            //
+        }
+
+        /**
+        * Bootstrap any application services.
+        */
+        public function boot(): void
+        {
+            Builder::useVite();
+        }
+    }
+    ```
+14. datatables can be loaded\
+     ![result datatables](report_asset/js5/2.5.png)
+### Praktikum 3
+1. Configure routing
+    ```php
+    Route::get('/kategori/create', [KategoriController::class, 'create']);
+    Route::post('/kategori', [KategoriController::class, 'store']);
+    ```
+2. Add new function on KategoriController
+    ```php
+    class KategoriController extends Controller
+    {
+        public function index(KategoriDataTable $dataTable)
+        {
+            return $dataTable->render('kategori.index');
+        }
+
+        public function create()
+        {
+            return view('kategori.create');
+        }
+
+        public function store(Request $request)
+        {
+            KategoriModel::create([
+                'kategori_kode' => $request->kodeKategori,
+                'kategori_nama' => $request->namaKategori
+            ]);
+            return redirect('/kategori');
+        }
+    }
+    ```
+3. Create file create.blade.php
+    ```php
+    @extends('layout.app')
+    {{-- customize layout settings --}}
+    @section('subtitle', 'Kategori')
+    @section('content_header_title', 'Kategori')
+    @section('content_header_subtitle', 'Create')
+    {{-- content body --}}
+    @section('content')
+        <div class="container">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Buat Kategori Baru</h3>
+                </div>
+
+                <form action="../kategori" method="post">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="kodeKategori">Kode Kategori</label>
+                            <input type="text" class="form-control" id="kodeKategori" name="kodeKategori" placeholder="Kode Kategori">
+                        </div>
+                        <div class="form-group">
+                            <label for="namaKategori">Nama Kategori</label>
+                            <input type="text" class="form-control" id="namaKategori" name="namaKategori" placeholder="Nama Kategori">
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endsection
+    ```
+4. do exception CsrfToken protection
+    ```php
+    namespace App\Http\Middleware;
+
+    use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
+
+    class VerifyCsrfToken extends Middleware
+    {
+        /**
+        * The URIs that should be excluded from CSRF verification.
+        *
+        * @var array<int, string>
+        */
+        protected $except = [
+            '/kategori'
+        ];
+    }
+    ```
+5. access kategori/create\
+    ![kategori/create](report_asset/js5/3.1.png)\
+    ![kategori/create](report_asset/js5/3.2.png)\
+    ![kategori/create](report_asset/js5/3.3.png)
+
+### Tugas
+1. Button add
+![tugas](report_asset/js5/T1.png)\
+2. Menu halaman kategori
+![tugas](report_asset/js5/T2.png)\
+3. Action edit
+![tugas](report_asset/js5/T3.png)\
+4. Action delete
+![tugas](report_asset/js5/T4.png)\
