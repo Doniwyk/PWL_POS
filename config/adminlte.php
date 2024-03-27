@@ -329,6 +329,11 @@ return [
             'icon' => 'fas fa-fw fa-user',
         ],
         [
+            'text' => 'Manage Kategori',
+            'url' => '../kategori',
+            'icon_color' => 'cyan',
+        ],
+        [
             'text' => 'change_password',
             'url' => 'admin/settings',
             'icon' => 'fas fa-fw fa-lock',

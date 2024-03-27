@@ -8,18 +8,21 @@
     <div class="container">
         <div class="card card-primary">
             <div class="card-header">
-                <h3 class="card-title">Buat Kategori Baru</h3>
+                <h3 class="card-title">Ubah Kategori</h3>
             </div>
 
-            <form action="../kategori" method="post">
+            <form action="{{ url('kategori/ubah_simpan', $kategori->kategori_id) }}" method="post">
+                {{ csrf_field() }}
+                {{ method_field('PUT') }}
+                
                 <div class="card-body">
                     <div class="form-group">
                         <label for="kodeKategori">Kode Kategori</label>
-                        <input type="text" class="form-control" id="kodeKategori" name="kodeKategori" placeholder="Kode Kategori | untuk makanan, contoh: MKN">
+                        <input type="text" class="form-control" id="kodeKategori" name="kodeKategori"  value="{{ $kategori->kategori_kode }}">
                     </div>
                     <div class="form-group">
                         <label for="namaKategori">Nama Kategori</label>
-                        <input type="text" class="form-control" id="namaKategori" name="namaKategori" placeholder="Nama Kategori">
+                        <input type="text" class="form-control" id="namaKategori" name="namaKategori"  value="{{ $kategori->kategori_nama }}">
                     </div>
                 </div>
 
