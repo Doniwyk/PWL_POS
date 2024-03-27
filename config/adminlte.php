@@ -330,7 +330,7 @@ return [
         ],
         [
             'text' => 'Manage Kategori',
-            'url' => '../kategori',
+            'url' => 'kategori',
             'icon_color' => 'cyan',
         ],
         [
