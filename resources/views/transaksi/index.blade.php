@@ -5,7 +5,7 @@
     <div class="card-header">
         <h3 class="card-title">{{ $page->title }}</h3>
         <div class="card-tools">
-            <a class="btn btn-sm btn-primary mt-1" href="{{ url('kategori/create') }}">Tambah</a>
+            <a class="btn btn-sm btn-primary mt-1" href="{{ url('transaksi/create') }}">Tambah</a>
         </div>
     </div>
     <div class="card-body">
@@ -20,24 +20,27 @@
                 <div class="form-group row">
                     <label class="col-1 control-label col-form-label">Filter:</label>
                     <div class="col-3">
-                        <select class="form-control" id="kategori_id" name="kategori_id" required>
+                        <select class="form-control" id="user_id" name="user_id" required>
                             <option value="">- Semua -</option>
-                            @foreach($kategori as $item)
-                            <option value="{{ $item->kategori_id }}">{{ $item->kategori_nama }}</option>
+                            @foreach($user as $item)
+                            <option value="{{ $item->user_id }}">{{ $item->nama }}</option>
                             @endforeach
                         </select>
-                        <small class="form-text text-muted">Kategori Pengguna</small>
+                        <small class="form-text text-muted">User</small>
                     </div>
                 </div>
             </div>
         </div>
-        <table class="table table-bordered table-striped table-hover table-sm" id="table_kategori">
+
+        <table class="table table-bordered table-striped table-hover table-sm" id="table_penjualan">
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Kategori ID</th>
-                    <th>Kategori Kode</th>
-                    <th>Kategori Nama</th>
+                    <th>ID Penjualan</th>
+                    <th>Kode Penjualan</th>
+                    <th>User</th>
+                    <th>Pembeli</th>
+                    <th>Penjualan Tanggal</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -52,14 +55,14 @@
 @push('js')
 <script>
     $(document).ready(function() {
-        var dataKategori = $('#table_kategori').DataTable({
+        var dataPenjualan = $('#table_penjualan').DataTable({
             serverSide: true, // serverSide: true, jika ingin menggunakan server side processing
             ajax: {
-                "url": "{{ url('kategori/list') }}",
+                "url": "{{ url('transaksi/list') }}",
                 "dataType": "json",
                 "type": "POST",
                 "data": function(d) {
-                    d.kategori_id = $('#kategori_id').val();
+                    d.user_id = $('#user_id').val();
                 }
             },
             columns: [{
@@ -69,19 +72,31 @@
                     searchable: false
                 },
                 {
-                    data: "kategori_id",
+                    data: "penjualan_id",
                     className: "",
                     orderable: true, // orderable: true, jika ingin kolom ini bisa diurutkan
                     searchable: true // searchable: true, jika ingin kolom ini bisa dicari
                 },
                 {
-                    data: "kategori_kode",
+                    data: "penjualan_kode",
                     className: "",
                     orderable: true, // orderable: true, jika ingin kolom ini bisa diurutkan
                     searchable: true // searchable: true, jika ingin kolom ini bisa dicari
                 },
                 {
-                    data: "kategori_nama",
+                    data: "user.nama",
+                    className: "",
+                    orderable: true, // orderable: true, jika ingin kolom ini bisa diurutkan
+                    searchable: true // searchable: true, jika ingin kolom ini bisa dicari
+                },
+                {
+                    data: "pembeli",
+                    className: "",
+                    orderable: true, // orderable: true, jika ingin kolom ini bisa diurutkan
+                    searchable: true // searchable: true, jika ingin kolom ini bisa dicari
+                },
+                {
+                    data: "penjualan_tanggal",
                     className: "",
                     orderable: true, // orderable: true, jika ingin kolom ini bisa diurutkan
                     searchable: true // searchable: true, jika ingin kolom ini bisa dicari
@@ -94,8 +109,8 @@
                 }
             ]
         });
-        $('#kategori_id').on('change', function() {
-            dataKategori.ajax.reload();
+        $('#user_id').on('change', function() {
+            dataPenjualan.ajax.reload();
         });
     });
 </script>
