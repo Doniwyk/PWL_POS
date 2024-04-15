@@ -27,6 +27,8 @@ class KategoriController extends Controller
         ]);
         return redirect('/kategori');
     }
+
+    // TUGAS
     public function ubah($id){
         $kategori = KategoriModel::find($id);
         return view('kategori.edit', ['kategori' => $kategori]);

@@ -1,21 +1,14 @@
-@extends('layout.app')
+@extends('layouts.template')
 
-{{-- Customize layout sections  --}}
-@section('subtitle', 'Welcome')
-@section('content_header_title', 'Home')
-@section('content_header_subtitle', 'Welcome')
+@section('content')
 
-{{-- Content body: main page content --}}
-@section('content_body')
-    <p>Welcome to this beatiful admin panel.</p>
-@stop
-
-{{-- Push extra CSS --}}
-@push('css')
-{{-- Add here extra stylesheets --}}
-@endpush
-
-{{-- Push extra JS --}}
-@push('js')
-    <script> console.log("Hi, I'm using the laravel-AdminLTE package!"); </script>
-@endpush
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Halo, apakabar</div>
+        <div class="card-tools"></div>
+    </div>
+    <div class="card-body">
+        Selamat datang semua, ini adalah halaman utama dari aplikasi ini.
+    </div>
+</div>
+@endsection
