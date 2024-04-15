@@ -1640,10 +1640,34 @@
 
 ### Tugas
 1. Button add
-![tugas](report_asset/js5/T1.png)\
+![tugas](report_asset/js5/T1.png)
 2. Menu halaman kategori
-![tugas](report_asset/js5/T2.png)\
+![tugas](report_asset/js5/T2.png)
 3. Action edit
-![tugas](report_asset/js5/T3.png)\
+![tugas](report_asset/js5/T3.png)
 4. Action delete
-![tugas](report_asset/js5/T4.png)\
+![tugas](report_asset/js5/T4.png)
+
+<div align="center">
+
+# JOBSHEET 6 <br> Template Form, Server Validation, Client Validation, CRUD
+
+</div>
+
+![tugas](report_asset/js6/1.1.png)\
+![tugas](report_asset/js6/1.2.png)\
+![tugas](report_asset/js6/1.3.png)\
+![tugas](report_asset/js6/1.4.png)
+
+
+<div align="center">
+
+# JOBSHEET 7 <br> LARAVEL STARTER CODE
+
+</div>
+
+<div align="center">
+
+# UTS
+
+</div>
