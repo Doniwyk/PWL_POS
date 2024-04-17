@@ -7,6 +7,7 @@ use App\Http\Controllers\StokController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\DetailController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WelcomeController::class, 'index']);
@@ -80,4 +81,16 @@ Route::group(['prefix' => 'transaksi'], function () {
     Route::get('/{id}/edit', [TransaksiController::class, 'edit']);
     Route::put('/{id}', [TransaksiController::class, 'update']);
     Route::delete('/{id}', [TransaksiController::class, 'destroy']);
+});
+
+//DETAIL
+Route::group(['prefix'=>'detailtransaksi'], function(){
+    Route::get('/', [DetailController::class, 'index']);
+    Route::post('/list', [DetailController::class, 'list']);
+    Route::get('/create', [DetailController::class, 'create']);
+    Route::post('/', [DetailController::class, 'store']);
+    Route::get('/{id}', [DetailController::class, 'show']);
+    Route::get('/{id}/edit', [DetailController::class, 'edit']);
+    Route::put('/{id}', [DetailController::class, 'update']);
+    Route::delete('/{id}', [DetailController::class, 'destroy']);
 });

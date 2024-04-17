@@ -34,7 +34,7 @@
                 <th>Tanggal Penjualan</th>
                 <td>{{ $transaksi->penjualan_tanggal }}</td>
             </tr>
-        </table>
+        </table> <br><br>
         @endempty
         <a href="{{ url('transaksi') }}" class="btn btn-sm btn-default mt-2">Kembali</a>
     </div>
