@@ -26,7 +26,7 @@
             <div class="form-group row">
                 <label class="col-2 control-label col-form-label">Kode Penjualan</label>
                 <div class="col-10">
-                    <input type="text" class="form-control" id="penjualan_kode" name="penjualan_kode" value="{{ old('penjualan_kode') }}" required>
+                    <input type="text" class="form-control" id="penjualan_kode" name="penjualan_kode" value="{{ old('penjualan_kode') }} {{ $lastID }}" required readonly>
                     @error('penjualan_kode')
                     <small class="form-text text-danger">{{ $message }}</small>
                     @enderror

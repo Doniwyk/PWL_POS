@@ -51,18 +51,24 @@ class TransaksiController extends Controller
         ->rawColumns(['aksi']) // memberitahu bahwa kolom aksi adalah html
         ->make(true);
     }
-    public function create(){
+    public function create()
+    {
         $breadcrumb = (object) [
-        'title' => 'Tambah Transaksi',
-        'list' => ['Home', 'Transaksi', 'Tambah']];
+            'title' => 'Tambah Transaksi',
+            'list' => ['Home', 'Transaksi', 'Tambah']
+        ];
         $page = (object) [
             'title' => 'Tambah transaksi baru'
         ];
-        $user = UserModel::all(); // ambil data level untuk ditampilkan di form $activeMenu 'user'; // set menu yang sedang aktif
+        $user = UserModel::all();
         $barang = BarangModel::all();
         $activeMenu = 'penjualan';
-        
-        return view('transaksi.create', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'barang' => $barang, 'activeMenu' => $activeMenu]);
+
+        // Mengambil ID transaksi terakhir
+        $lastTransaksi = TransaksiModel::latest()->first();
+        $lastID = $lastTransaksi ? $lastTransaksi->penjualan_id + 1 : 1;
+
+        return view('transaksi.create', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'barang' => $barang, 'activeMenu' => $activeMenu, 'lastID' => 'PJL0'.$lastID]);
     }
     public function store(Request $request){
         $request->validate([
