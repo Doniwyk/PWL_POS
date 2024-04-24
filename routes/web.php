@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LevelController;
@@ -8,6 +10,7 @@ use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\DetailController;
+use App\Http\Controllers\ManagerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WelcomeController::class, 'index']);
@@ -93,4 +96,20 @@ Route::group(['prefix'=>'detailtransaksi'], function(){
     Route::get('/{id}/edit', [DetailController::class, 'edit']);
     Route::put('/{id}', [DetailController::class, 'update']);
     Route::delete('/{id}', [DetailController::class, 'destroy']);
+});
+
+//JS9
+Route::get('login', [AuthController::class, 'index'])->name('login');
+Route::get('register', [AuthController::class, 'register'])->name('register');
+Route::post('proses_login', [AuthController::class, 'proses_login'])->name('proses_login');
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('proses_register', [AuthController::class, 'proses_register'])->name('proses_register');
+
+Route::group (['middleware' => ['auth']], function () {
+    Route::group(['middleware' => [ 'cek_login:1']], function () {
+        Route:: resource('admin', AdminController::class);
+    });
+        Route::group(['middleware' => [ 'cek_login:2']], function () { 
+            Route:: resource('manager', ManagerController::class);
+    });
 });
