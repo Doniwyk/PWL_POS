@@ -12,7 +12,12 @@ class BarangController extends Controller
         return BarangModel::all();
     }
     public function store(Request $request){
-        $barang = BarangModel::create($request->all());
+        $data = $request->all();
+        if ($request->hasFile('image')) {
+            $request->file('image')->storeAs('public/images', $request->image->hashName());
+            $data['image'] = $request->image->hashName();
+        }
+        $barang = BarangModel::create($data);
         return response()->json($barang, 201);
     }
     public function show(BarangModel $barang){
@@ -25,6 +30,7 @@ class BarangController extends Controller
             'barang_kode' => $request->barang_kode ? $request->barang_kode : $barang->barang_kode,
             'harga_beli' => $request->harga_beli ? $request->harga_beli : $barang->harga_beli,
             'harga_jual' => $request->harga_jual ? $request->harga_jual : $barang->harga_jual,
+            'image' => $request->image ? $request->image : $barang->image->hashName(),
         ]);
         return $barang;
     }
